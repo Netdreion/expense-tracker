@@ -8,6 +8,7 @@ export default function Start() {
     cat: "",
   });
   const [list, setList] = useState([]);
+  const [edit, setEdit] = useState(-1);
 
   const handleChange = (event) => {
     const updatedValue = event.target.value;
@@ -15,9 +16,27 @@ export default function Start() {
 
     setFormField({ ...formField, [formFieldKey]: updatedValue });
   };
+
   const handleClick = () => {
-    setList([...list, formField]);
+    if (edit === -1) {
+      setList([...list, formField]);
+    } else {
+      const newList = [...list];
+      newList[edit] = formField;
+      setList(newList);
+      setEdit(-1);
+    }
     setFormField({ expense: "", amount: 0, cat: "" });
+  };
+
+  const handleEdit = (index) => {
+    setEdit(index);
+    const selectedItem = list[index];
+    setFormField({
+      expense: selectedItem.expense,
+      amount: selectedItem.amount,
+      cat: selectedItem.cat,
+    });
   };
 
   return (
@@ -31,7 +50,17 @@ export default function Start() {
             <th>Category</th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          {list.map((item, index) => {
+            return (
+              <tr onClick={() => handleEdit(index)} key={index}>
+                <td>{item.expense}</td>
+                <td>{item.amount}</td>
+                <td>{item.cat}</td>
+              </tr>
+            );
+          })}
+        </tbody>
       </table>
       <div className="form-container">
         <form>
@@ -69,31 +98,9 @@ export default function Start() {
             </label>
           </fieldset>
           <button type="button" onClick={handleClick}>
-            add
+            {edit === -1 ? "add" : "edit"}
           </button>
         </form>
-        <div>
-          <table>
-            <thead>
-              <tr>
-                <th>expense</th>
-                <th>Amount</th>
-                <th>Category</th>
-              </tr>
-            </thead>
-            <tbody>
-              {list.map((item, index) => {
-                return (
-                  <tr key={index}>
-                    <td>{item.expense}</td>
-                    <td>{item.amount}</td>
-                    <td>{item.cat}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
       </div>
     </div>
   );
