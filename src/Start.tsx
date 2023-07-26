@@ -7,13 +7,17 @@ export default function Start() {
     amount: 0,
     cat: "",
   });
-  const [list, SetList] = useState([]);
+  const [list, setList] = useState([]);
 
   const handleChange = (event) => {
     const updatedValue = event.target.value;
     const formFieldKey = event.target.name;
 
     setFormField({ ...formField, [formFieldKey]: updatedValue });
+  };
+  const handleClick = () => {
+    setList([...list, formField]);
+    setFormField({ expense: "", amount: 0, cat: "" });
   };
 
   return (
@@ -40,6 +44,7 @@ export default function Start() {
                 type="text"
                 placeholder="name"
                 name="expense"
+                value={formField.expense}
               />
             </label>
             <label>
@@ -49,6 +54,7 @@ export default function Start() {
                 type="text"
                 placeholder="$100"
                 name="amount"
+                value={formField.amount}
               />
             </label>
             <label>
@@ -58,11 +64,36 @@ export default function Start() {
                 type="text"
                 placeholder="food"
                 name="cat"
+                value={formField.cat}
               />
             </label>
           </fieldset>
-          <button></button>
+          <button type="button" onClick={handleClick}>
+            add
+          </button>
         </form>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>expense</th>
+                <th>Amount</th>
+                <th>Category</th>
+              </tr>
+            </thead>
+            <tbody>
+              {list.map((item, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{item.expense}</td>
+                    <td>{item.amount}</td>
+                    <td>{item.cat}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
