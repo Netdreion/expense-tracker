@@ -1,6 +1,21 @@
+import { useState } from "react";
 import "./styles.css";
 
 export default function Start() {
+  const [formField, setFormField] = useState({
+    expense: "",
+    amount: 0,
+    cat: "",
+  });
+  const [list, SetList] = useState([]);
+
+  const handleChange = (event) => {
+    const updatedValue = event.target.value;
+    const formFieldKey = event.target.name;
+
+    setFormField({ ...formField, [formFieldKey]: updatedValue });
+  };
+
   return (
     <div className="container">
       <h1>Expense Tracker - Start</h1>
@@ -20,17 +35,33 @@ export default function Start() {
             <legend>Add / Edit Item</legend>
             <label>
               Name
-              <input type="text" placeholder="name" />
+              <input
+                onChange={handleChange}
+                type="text"
+                placeholder="name"
+                name="expense"
+              />
             </label>
             <label>
               Amount
-              <input type="text" placeholder="$100" />
+              <input
+                onChange={handleChange}
+                type="text"
+                placeholder="$100"
+                name="amount"
+              />
             </label>
             <label>
               Category
-              <input type="text" placeholder="food" />
+              <input
+                onChange={handleChange}
+                type="text"
+                placeholder="food"
+                name="cat"
+              />
             </label>
           </fieldset>
+          <button></button>
         </form>
       </div>
     </div>
